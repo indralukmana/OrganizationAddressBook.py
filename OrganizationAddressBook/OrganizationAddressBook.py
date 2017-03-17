@@ -47,7 +47,10 @@ def close_db(error):
 
 @app.route('/')
 def hello_world():
-    return render_template("index.html")
+    db = get_db()
+    cur = db.execute('SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY id DESC ')
+    contacts = cur.fetchall()
+    return render_template("index.html", contacts=contacts)
 
 
 if __name__ == '__main__':
