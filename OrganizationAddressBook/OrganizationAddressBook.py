@@ -25,6 +25,13 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'sqlite_db'):
+        g.sqlite_db.close()
+
+
 @app.route('/')
 def hello_world():
     return render_template("index.html")
