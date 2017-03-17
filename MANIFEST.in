@@ -1,0 +1,3 @@
+graft OrganizationAddressBook/templates
+graft OrganizationAddressBook/static
+include OrganizationAddressBook/schema.sql

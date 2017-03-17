@@ -20,6 +20,11 @@ def connect_db():
     return rv
 
 
+def get_db():
+    if not hasattr(g, 'sqlite_db'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+
 @app.route('/')
 def hello_world():
     return render_template("index.html")
