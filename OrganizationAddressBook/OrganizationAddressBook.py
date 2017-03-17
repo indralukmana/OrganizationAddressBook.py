@@ -46,11 +46,25 @@ def close_db(error):
 
 
 @app.route('/')
-def hello_world():
+def contacts_list():
     db = get_db()
-    cur = db.execute('SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY id DESC ')
+    cur = db.execute(
+        'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY id DESC ')
     contacts = cur.fetchall()
     return render_template("index.html", contacts=contacts)
+
+
+@app.route('/add', methods=['POST'])
+def add_entry():
+    if not session.get('logged_in'):
+        abort(401)
+    db = get_db()
+    db.execute('INSERT INTO contacts (organization, contactPerson, phoneNumber, email, address) VALUES (?, ?, ?, ?, ?)',
+               [request.form['organization'], request.form['contactPerson'], request.form['phoneNumber'],
+                request.form['email'], request.form['address']])
+    db.commit()
+    flash('New contact successfully added')
+    return redirect(url_for('contacts_list'))
 
 
 if __name__ == '__main__':
