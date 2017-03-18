@@ -56,7 +56,7 @@ def contacts_list():
 
 
 @app.route('/add', methods=['POST'])
-def add_entry():
+def add_contact():
     if not session.get('logged_in'):
         abort(401)
     db = get_db()
@@ -66,6 +66,19 @@ def add_entry():
     db.commit()
     flash('New contact successfully added')
     return redirect(url_for('contacts_list'))
+
+
+@app.route('/remove/<contact_id>', methods=['POST'])
+def remove_contact(contact_id):
+    if not session.get('logged_in'):
+        abort(401)
+    db = get_db()
+    db.execute('DELETE FROM contacts WHERE id = ?', [contact_id])
+    db.commit()
+    flash('Contact has been removed')
+    return redirect(url_for('contacts_list'))
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

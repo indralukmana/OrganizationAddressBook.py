@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     {% if session.logged_in %}
-        <form action="{{ url_for('add_entry') }}" method=post>
+        <form action="{{ url_for('add_contact') }}" method=post>
             <dl>
                 <dt>Organization:</dt>
                 <dd><input type="text" size="30" name="organization"></dd>
@@ -25,6 +25,11 @@
             <li>Phone Number: {{ contact.phoneNumber }}</li>
             <li>Email: {{ contact.email }}</li>
             <li>Address: {{ contact.address }}</li>
+            <li>id: {{ contact.id }}</li>
+
+            <form action="/remove/{{ contact.id }}" method="post">
+                <input type="submit" value="delete">
+            </form>
 
         {% else %}
             <li>No contact</li>
