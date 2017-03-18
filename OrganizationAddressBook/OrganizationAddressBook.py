@@ -51,7 +51,7 @@ def contacts_list():
     cur = db.execute(
         'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY id DESC ')
     contacts = cur.fetchall()
-    return render_template("index.html", contacts=contacts)
+    return render_template("contacts_list.html", contacts=contacts)
 
 
 @app.route('/add', methods=['POST'])
