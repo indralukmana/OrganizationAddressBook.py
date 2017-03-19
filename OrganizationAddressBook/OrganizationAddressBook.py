@@ -57,17 +57,20 @@ def contacts_list():
     return render_template("contacts_list.html", contacts=contacts)
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_contact():
     if not session.get('logged_in'):
         abort(401)
     db = get_db()
-    db.execute('INSERT INTO contacts (organization, contactPerson, phoneNumber, email, address) VALUES (?, ?, ?, ?, ?)',
-               [request.form['organization'], request.form['contactPerson'], request.form['phoneNumber'],
-                request.form['email'], request.form['address']])
-    db.commit()
-    flash('New contact successfully added')
-    return redirect(url_for('contacts_list'))
+    if request.method == 'POST':
+        db.execute('INSERT INTO contacts (organization, contactPerson, phoneNumber, email, address) VALUES (?, ?, ?, ?, ?)',
+                   [request.form['organization'], request.form['contactPerson'], request.form['phoneNumber'],
+                    request.form['email'], request.form['address']])
+        db.commit()
+        flash('New contact successfully added')
+        return redirect(url_for('contacts_list'))
+    elif request.method == 'GET':
+        return redirect(url_for('contacts_list'))
 
 
 @app.route('/remove/<contact_id>')

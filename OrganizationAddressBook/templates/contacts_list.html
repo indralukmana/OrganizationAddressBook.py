@@ -109,10 +109,18 @@
                                 </div> <!-- div for the delete button column -->
                             </div><!-- div for the edit and remove row -->
 
-                        {% endif %}
+                        {% endif %} {# if for the button #}
 
                     </form>
 
+                    {% else %}
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="{{ url_for('add_contact') }}" method="get">
+                                <input type="submit" class="btn btn-primary" value="Add Contact">
+                            </form>
+                        </div>
+                    </div>
 
                 {% endif %}
                 {#                <ul class="list-group">#}
