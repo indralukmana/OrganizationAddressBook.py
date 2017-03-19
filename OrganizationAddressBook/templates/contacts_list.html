@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% if session.logged_in %}
+    {% if session.logged_in and selected_contact == null %}
         <form action="{{ url_for('add_contact') }}" method=post>
             <dl>
                 <dt>Organization:</dt>
@@ -17,6 +17,24 @@
                 <dd><input type="submit" value="Add"></dd>
             </dl>
         </form>
+    {% elif session.logged_in and selected_contact != null %}
+        <form action="/edit/{{ selected_contact.id }}" method=post>
+            <dl>
+                <dt>Organization:</dt>
+                <dd><input type="text" size="30" name="organization" value="{{ selected_contact.organization }}"></dd>
+                <dt>Contact Person:</dt>
+                <dd><input type="text" size="30" name="contactPerson" value=" {{ selected_contact.contactPerson }}">
+                </dd>
+                <dt>Phone Number:</dt>
+                <dd><input type="text" size="30" name="phoneNumber" value="{{ selected_contact.phoneNumber }}"></dd>
+                <dt>Email:</dt>
+                <dd><input type="text" size="30" name="email" value="{{ selected_contact.email }}"></dd>
+                <dt>Address:</dt>
+                <dd><input type="text" size="30" name="address" value="{{ selected_contact.address }}"></dd>
+
+                <dd><input type="submit" value="Update"></dd>
+            </dl>
+        </form>
     {% endif %}
     <ul class="entries">
         {% for contact in contacts %}
@@ -31,8 +49,14 @@
                 <input type="submit" value="delete">
             </form>
 
+            <form action="/edit/{{ contact.id }}" method="get">
+                <input type="submit" value="edit">
+            </form>
+
         {% else %}
-            <li>No contact</li>
+            {% if selected_contact == null %}
+                <li>No contact</li>
+            {% endif %}
         {% endfor %}
     </ul>
 {% endblock %}

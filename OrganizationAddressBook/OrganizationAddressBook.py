@@ -79,6 +79,26 @@ def remove_contact(contact_id):
     return redirect(url_for('contacts_list'))
 
 
+@app.route('/edit/<contact_id>', methods=['GET', 'POST'])
+def edit_contact(contact_id):
+    if not session.get('logged_in'):
+        abort(401)
+    db = get_db()
+    if request.method == 'POST':
+        db.execute('UPDATE contacts SET organization=?, contactPerson=?, phoneNumber=?, email=?, address=? WHERE  id=?',
+                   [request.form['organization'], request.form['contactPerson'],
+                    request.form['phoneNumber'], request.form['email'],
+                    request.form['address'], contact_id])
+        db.commit()
+        flash('Contact successfully edited')
+        return redirect(url_for('contacts_list'))
+    elif request.method == 'GET':
+        cur = db.execute('SELECT id, organization, contactPerson, phoneNumber, email, address '
+                         'FROM contacts '
+                         'WHERE id=? ', [contact_id])
+        selected_contact = cur.fetchall()
+        return render_template('contacts_list.html', selected_contact=selected_contact[0])
+    return redirect(url_for('contacts_list'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
