@@ -8,44 +8,44 @@
     <meta name="author" content="Indra Lukmana">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="css/bootstrap.css") }}">
 </head>
 <body>
 
-<header>
+<div class="jumbotron">
     <div class="container-fluid">
-        <h1>Organization Address Book</h1>
+        <h1 class="display-3">Organization Address Book</h1>
     </div>
-</header>
+</div>
 
-<div class="contacts">
+<div class="container-fluid">
 
-    {% if not session.logged_in %}
-        <a href="{{ url_for('login') }}">Log In</a>
-    {% else %}
-        <a href="{{ url_for('logout') }}">Log Out</a>
-    {% endif %}
+    <div class="row">
+        {% if not session.logged_in %}
+            <a href="{{ url_for('login') }}">Log In</a>
+        {% else %}
+            <a href="{{ url_for('logout') }}">Log Out</a>
+        {% endif %}
+    </div> <!-- div row login/logout -->
 
     {% for message in get_flashed_messages() %}
-        {{ message }}
+        <div class="alert alert-success">
+            {{ message }}
+        </div> <!-- div alert -->
     {% endfor %}
 
-    {% block content %}
-    {% endblock %}
-
+    <div class="row">
+        <div class="col-12">
+            {% block content %}
+            {% endblock %}
+        </div> <!-- div col-12 -->
+    </div> <!-- div row content -->
 
     <!-- jQuery, Tether, and Bootstrap Javascript -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-            crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tether.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-</div>
+</div> <!-- end div for container -->
 </body>
 </html>

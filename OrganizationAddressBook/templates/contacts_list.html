@@ -1,62 +1,123 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% if session.logged_in and selected_contact == null %}
-        <form action="{{ url_for('add_contact') }}" method=post>
-            <dl>
-                <dt>Organization:</dt>
-                <dd><input type="text" size="30" name="organization"></dd>
-                <dt>Contact Person:</dt>
-                <dd><input type="text" size="30" name="contactPerson"></dd>
-                <dt>Phone Number:</dt>
-                <dd><input type="text" size="30" name="phoneNumber"></dd>
-                <dt>Email:</dt>
-                <dd><input type="text" size="30" name="email"></dd>
-                <dt>Address:</dt>
-                <dd><input type="text" size="30" name="address"></dd>
+    <div class="col-12">
+        {% if session.logged_in and selected_contact == null %}
+            <form action="{{ url_for('add_contact') }}" method=post>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="organization-text-input">Organization</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="organization" id="organization-text-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="contactperson-text-input">Contact Person</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="contactPerson" id="contactperson-text-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="phonenumber-text-input">Phone Number</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="phoneNumber" id="phonenumber-text-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="email-text-input">Email</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="email" id="email-text-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="address-text-input">Address</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="address" id="address-text-input">
+                    </div>
+                </div>
 
-                <dd><input type="submit" value="Add"></dd>
-            </dl>
-        </form>
-    {% elif session.logged_in and selected_contact != null %}
-        <form action="/edit/{{ selected_contact.id }}" method=post>
-            <dl>
-                <dt>Organization:</dt>
-                <dd><input type="text" size="30" name="organization" value="{{ selected_contact.organization }}"></dd>
-                <dt>Contact Person:</dt>
-                <dd><input type="text" size="30" name="contactPerson" value=" {{ selected_contact.contactPerson }}">
-                </dd>
-                <dt>Phone Number:</dt>
-                <dd><input type="text" size="30" name="phoneNumber" value="{{ selected_contact.phoneNumber }}"></dd>
-                <dt>Email:</dt>
-                <dd><input type="text" size="30" name="email" value="{{ selected_contact.email }}"></dd>
-                <dt>Address:</dt>
-                <dd><input type="text" size="30" name="address" value="{{ selected_contact.address }}"></dd>
-
-                <dd><input type="submit" value="Update"></dd>
-            </dl>
-        </form>
-    {% endif %}
-    <ul class="entries">
-        {% for contact in contacts %}
-            <li>Organization: {{ contact.organization }}</li>
-            <li>Contact Person: {{ contact.contactPerson }}</li>
-            <li>Phone Number: {{ contact.phoneNumber }}</li>
-            <li>Email: {{ contact.email }}</li>
-            <li>Address: {{ contact.address }}</li>
-            <li>id: {{ contact.id }}</li>
-
-            <form action="/remove/{{ contact.id }}" method="post">
-                <input type="submit" value="delete">
+                <input type="submit" class="btn btn-primary" value="Add">
             </form>
+        {% elif session.logged_in and selected_contact != null %}
+            <form action="/edit/{{ selected_contact.id }}" method=post>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="organization-text-input">Organization</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="organization" id="organization-text-input"
+                               value="{{ selected_contact.organization }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="contactperson-text-input">Contact Person</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="contactPerson" id="contactperson-text-input"
+                               value="{{ selected_contact.contactPerson }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="phonenumber-text-input">Phone Number</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="phoneNumber" id="phonenumber-text-input"
+                               value="{{ selected_contact.phoneNumber }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="email-text-input">Email</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="email" id="email-text-input"
+                               value="{{ selected_contact.email }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label" for="address-text-input">Address</label>
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="address" id="address-text-input"
+                               value="{{ selected_contact.address }}">
+                    </div>
+                </div>
 
-            <form action="/edit/{{ contact.id }}" method="get">
-                <input type="submit" value="edit">
+                <input type="submit" class="btn btn-warning" value="Update">
+
             </form>
+        {% endif %}
+    </div> <!-- div for the add and edit form -->
 
-        {% else %}
-            {% if selected_contact == null %}
-                <li>No contact</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <ul class="list-group">
+                    {% for contact in contacts %}
+                        <li class="list-group-item"> {{ contact.organization }}</li>
+                    {% endfor %}
+                </ul>
+            </div> <!-- div for the contact organization list -->
+            <div class="col-8">
+                <ul class="list-group">
+                    {% for contact in contacts %}
+                        <li class="list-group-item"> Organization: {{ contact.organization }}</li>
+                        <li class="list-group-item"> Contact Person: {{ contact.contactPerson }}</li>
+                        <li class="list-group-item"> Phone Number: {{ contact.phoneNumber }}</li>
+                        <li class="list-group-item"> Email: {{ contact.email }}</li>
+                        <li class="list-group-item"> Address: {{ contact.address }}</li>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <form action="/edit/{{ contact.id }}" method="get">
+                                    <input type="submit" class="btn btn-warning" value="edit">
+                                </form>
+                            </div> <!-- div for the edit button column -->
+                            <div class="col-6">
+                                <form action="/remove/{{ contact.id }}" method="post">
+                                    <input type="submit" class="btn btn-danger" value="delete">
+                                </form>
+                            </div> <!-- div for the delete button column -->
+                        </div><!-- div for the edit and delete row -->
+
+                    {% else %}
+                        {% if selected_contact == null %}
+                            <li>No contact</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div> <!-- div for the col-8 contact details -->
+        </div> <!-- div for the row of contacts -->
+    </div> <!-- div for the contact list -->
 {% endblock %}
