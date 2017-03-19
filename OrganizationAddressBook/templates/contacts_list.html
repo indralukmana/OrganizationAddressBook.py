@@ -98,18 +98,21 @@
                         <li class="list-group-item"> Email: {{ contact.email }}</li>
                         <li class="list-group-item"> Address: {{ contact.address }}</li>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <form action="/edit/{{ contact.id }}" method="get">
-                                    <input type="submit" class="btn btn-warning" value="edit">
-                                </form>
-                            </div> <!-- div for the edit button column -->
-                            <div class="col-6">
-                                <form action="/remove/{{ contact.id }}" method="post">
-                                    <input type="submit" class="btn btn-danger" value="delete">
-                                </form>
-                            </div> <!-- div for the delete button column -->
-                        </div><!-- div for the edit and delete row -->
+
+                        {% if session.logged_in %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <form action="/edit/{{ contact.id }}" method="get">
+                                        <input type="submit" class="btn btn-warning" value="edit">
+                                    </form>
+                                </div> <!-- div for the edit button column -->
+                                <div class="col-6">
+                                    <form action="/remove/{{ contact.id }}" method="post">
+                                        <input type="submit" class="btn btn-danger" value="delete">
+                                    </form>
+                                </div> <!-- div for the delete button column -->
+                            </div><!-- div for the edit and delete row -->
+                        {% endif %}
 
                     {% else %}
                         {% if selected_contact == null %}
