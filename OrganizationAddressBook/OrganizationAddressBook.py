@@ -49,9 +49,11 @@ def close_db(error):
 @app.route('/')
 def contacts_list():
     db = get_db()
+
     cur = db.execute(
-        'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY id DESC ')
+        'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
     contacts = cur.fetchall()
+
     return render_template("contacts_list.html", contacts=contacts)
 
 
@@ -68,7 +70,7 @@ def add_contact():
     return redirect(url_for('contacts_list'))
 
 
-@app.route('/remove/<contact_id>', methods=['POST'])
+@app.route('/remove/<contact_id>')
 def remove_contact(contact_id):
     if not session.get('logged_in'):
         abort(401)
@@ -91,13 +93,37 @@ def edit_contact(contact_id):
                     request.form['address'], contact_id])
         db.commit()
         flash('Contact successfully edited')
-        return redirect(url_for('contacts_list'))
+        return redirect(url_for('select_contact', contact_id=contact_id))
     elif request.method == 'GET':
+        cur = db.execute(
+            'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
+        contacts = cur.fetchall()
+
         cur = db.execute('SELECT id, organization, contactPerson, phoneNumber, email, address '
                          'FROM contacts '
                          'WHERE id=? ', [contact_id])
         selected_contact = cur.fetchall()
-        return render_template('contacts_list.html', selected_contact=selected_contact[0])
+
+        disabled = ' '
+        edit_cancel = 'cancel'
+
+        return render_template('contacts_list.html', contacts=contacts, selected_contact=selected_contact[0], disabled=disabled, edit_cancel=edit_cancel)
+    return redirect(url_for('contacts_list'))
+
+
+@app.route('/select/<contact_id>', methods=['GET'])
+def select_contact(contact_id):
+    db = get_db()
+    if request.method == 'GET':
+        cur = db.execute(
+            'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
+        contacts = cur.fetchall()
+
+        cur = db.execute('SELECT id, organization, contactPerson, phoneNumber, email, address '
+                         'FROM contacts '
+                         'WHERE id=? ', [contact_id])
+        selected_contact = cur.fetchall()
+        return render_template('contacts_list.html', contacts=contacts, selected_contact=selected_contact[0])
     return redirect(url_for('contacts_list'))
 
 
@@ -105,11 +131,11 @@ def edit_contact(contact_id):
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
+        # if request.form['username'] != app.config['USERNAME']:
+        #     error = 'Invalid username'
+        # elif request.form['password'] != app.config['PASSWORD']:
+        #     error = 'Invalid password'
+        # else:
             session['logged_in'] = True
             flash('You were logged in')
             return redirect(url_for('contacts_list'))
