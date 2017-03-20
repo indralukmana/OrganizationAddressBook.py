@@ -70,7 +70,10 @@ def add_contact():
         flash('New contact successfully added')
         return redirect(url_for('contacts_list'))
     elif request.method == 'GET':
-        return redirect(url_for('contacts_list'))
+        cur = db.execute(
+            'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
+        contacts = cur.fetchall()
+        return render_template('contacts_list.html', contacts=contacts, add_new='yes')
 
 
 @app.route('/remove/<contact_id>')
