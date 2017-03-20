@@ -52,8 +52,10 @@ def contacts_list():
         'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
     contacts = cur.fetchall()
 
-    return render_template("contacts_list.html", contacts=contacts)
-
+    if len(contacts) >= 1:
+        return render_template("contacts_list.html", contacts=contacts, selected_contact=contacts[0])
+    else:
+        return render_template("contacts_list.html", contacts=contacts)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_contact():
