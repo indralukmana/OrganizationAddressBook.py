@@ -59,12 +59,14 @@ def contacts_list():
 def add_contact():
     db = get_db()
     if request.method == 'POST':
-        db.execute('INSERT INTO contacts (organization, contactPerson, phoneNumber, email, address) VALUES (?, ?, ?, ?, ?)',
+        cursor = db.execute('INSERT INTO contacts (organization, contactPerson, phoneNumber, email, address) VALUES (?, ?, ?, ?, ?)',
                    [request.form['organization'], request.form['contactPerson'], request.form['phoneNumber'],
                     request.form['email'], request.form['address']])
         db.commit()
+        contact_id = cursor.lastrowid
+
         flash('New contact successfully added')
-        return redirect(url_for('contacts_list'))
+        return redirect(url_for('select_contact', contact_id=contact_id))
     elif request.method == 'GET':
         cur = db.execute(
             'SELECT id, organization, contactPerson, phoneNumber, email, address FROM contacts ORDER BY organization ASC ')
