@@ -20,14 +20,6 @@
 
 <div class="container-fluid">
 
-    <div class="row">
-        {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">Log In</a>
-        {% else %}
-            <a href="{{ url_for('logout') }}">Log Out</a>
-        {% endif %}
-    </div> <!-- div row login/logout -->
-
     {% for message in get_flashed_messages() %}
         <div class="alert alert-success">
             {{ message }}
