@@ -57,6 +57,7 @@ def contacts_list():
     else:
         return render_template("contacts_list.html", contacts=contacts)
 
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_contact():
     db = get_db()
