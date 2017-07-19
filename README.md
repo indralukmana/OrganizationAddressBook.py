@@ -14,6 +14,8 @@ flask run
 Then open the following address in your browser
 [127.0.0.1:5000](http://127.0.0.1:5000 "127.0.0.1:5000")
 
+![screenshot](https://github.com/indralukmana/OrganizationAddressBook.py/raw/master/Screenshot%20OAB.png)
+
 # License
 
 MIT License
